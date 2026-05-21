@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JugglingFlow · El lenguaje secreto del malabarismo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Outfit:wght@600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div id="scrollProgress"></div>
+
+    <!-- Chapter side navigation -->
+    <nav id="chapterNav" aria-label="Capítulos">
+        <a class="cn-dot" data-chapter="0" href="#hero" title="Inicio"></a>
+        <a class="cn-dot" data-chapter="1" href="#cap-lenguaje" title="El lenguaje"></a>
+        <a class="cn-dot" data-chapter="2" href="#cap-patrones" title="Los patrones"></a>
+        <a class="cn-dot" data-chapter="3" href="#cap-disciplinas" title="Las disciplinas"></a>
+        <a class="cn-dot" data-chapter="4" href="#cap-origenes" title="Los orígenes"></a>
+        <a class="cn-dot" data-chapter="5" href="#cap-ciencia" title="La ciencia"></a>
+        <a class="cn-dot" data-chapter="6" href="#cap-experto" title="Nivel experto"></a>
+        <a class="cn-dot" data-chapter="7" href="#cap-practica" title="La práctica"></a>
+    </nav>
+
+    <button id="themeToggle" aria-label="Cambiar tema">
+        <i class="ph-fill ph-moon" id="themeIcon"></i>
+    </button>
+
+    <main>
+
+        <!-- ===================== HERO ===================== -->
+        <section class="hero" id="hero" data-chapter="0">
+            <div class="hero-bg">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+                <div class="orb orb-3"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-eyebrow">4.000 años de historia · 40 años de matemáticas</div>
+                <h1 class="hero-title">Un número.<br><span class="highlight">Infinitos patrones.</span></h1>
+                <p class="hero-subtitle">En 1985, tres grupos de matemáticos —sin conocerse— descubrieron el mismo secreto sobre el malabarismo. Este es el viaje para entenderlo.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-num" data-count="4000">0</span>
+                        <span class="stat-label">años de historia</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num">∞</span>
+                        <span class="stat-label">patrones posibles</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num" data-count="3">0</span>
+                        <span class="stat-label">grupos que lo descubrieron simultáneamente</span>
+                    </div>
+                </div>
+                <a href="#cap-lenguaje" class="btn btn-primary btn-hero">Comenzar el viaje</a>
+            </div>
+            <div class="scroll-indicator">
+                <span></span>
+            </div>
+        </section>
+
+        <!-- ===================== CHAPTER BREAK 1 ===================== -->
+        <div class="chapter-break" id="cap-lenguaje" data-chapter="1" data-num="01">
+            <div class="cb-inner">
+                <span class="cb-label">Capítulo</span>
+                <div class="cb-num">01</div>
+                <h2 class="cb-title">El lenguaje</h2>
+                <p class="cb-sub">1985 · Caltech · Cambridge · Santa Cruz</p>
+            </div>
+        </div>
+
+        <!-- ===================== SCROLLYTELLING: SITESWAP ===================== -->
+        <section class="scrolly-section" id="siteswap">
+            <div class="scrolly-sticky">
+                <div class="sim-wrap">
+                    <div class="sim-tabs">
+                        <button class="sim-tab active" data-mode="canvas"><i class="ph-fill ph-circles-three"></i> Canvas</button>
+                        <button class="sim-tab" data-mode="jlab"><i class="ph-fill ph-person-simple-run"></i> JugglingLab</button>
+                    </div>
+
+                    <div id="canvasView">
+                        <canvas id="simulatorCanvas" width="520" height="380"></canvas>
+                    </div>
+
+                    <div id="jlabView" style="display:none">
+                        <div class="jlab-wrapper">
+                            <div class="jlab-idle" id="jlabIdle">Selecciona un patrón para ver la animación</div>
+                            <div class="jlab-loading" id="jlabLoading">
+                                <div class="jlab-spinner"></div>
+                                <span>Cargando animación...</span>
+                            </div>
+                            <img id="jlabImg" class="jlab-frame" alt="JugglingLab animation">
+                        </div>
+                        <div class="canvas-info" id="jlabInfo">Requiere conexión a internet</div>
+                    </div>
+
+                    <div class="canvas-info" id="canvasInfo">—</div>
+                </div>
+            </div>
+
+            <div class="scrolly-panels">
+
+                <div class="scrolly-panel" data-pattern="3" id="panel-0">
+                    <span class="panel-num">01 · El lenguaje</span>
+                    <h2>Esto es el <code class="mono-code">3</code>.</h2>
+                    <p>El cascade. El patrón que todo juggler aprende primero. Lleva 4.000 años haciéndose — los egipcios ya lo hacían en las tumbas de Beni Hasan.</p>
+                    <p>Pero el <strong>3</strong> no es el nombre del truco. Es su matemática: esta bola tarda <strong>3 beats</strong> en volver a tu mano.</p>
+                </div>
+
+                <div class="scrolly-panel" data-pattern="51" id="panel-1">
+                    <h2>El <code class="mono-code">51</code> — la ducha.</h2>
+                    <p>Un lanzamiento alto (5) y un pase rápido (1). Las bolas circulan en loop.</p>
+                    <p>¿Es válido? (5+1)/2 = 3. Sí — <strong>tres bolas</strong>, confirmado antes de que el primero vuele.</p>
+                    <div class="panel-callout">La regla: si el promedio de los dígitos es un entero, el patrón existe. Si no, es físicamente imposible.</div>
+                </div>
+
+                <div class="scrolly-panel" data-pattern="531" id="panel-2">
+                    <h2>El <code class="mono-code">531</code>.</h2>
+                    <p>Un alto, un medio, un rápido. Asimétrico, dramáticamente visual. El favorito para demostrar.</p>
+                    <p>(5+3+1)/3 = <strong>3 bolas</strong>. Tres dígitos, tres bolas, una secuencia perfecta.</p>
+                </div>
+
+                <div class="scrolly-panel" data-pattern="97531" id="panel-3">
+                    <h2>Y esto es el <code class="mono-code">97531</code>.</h2>
+                    <p>Cinco bolas. Cinco alturas radicalmente distintas. Un patrón de élite que dominan menos de 200 personas en el mundo.</p>
+                    <p>(9+7+5+3+1)/5 = <strong>5 bolas</strong>. El mismo principio. Una escala completamente diferente.</p>
+                    <div class="panel-callout">De un número a otro, el lenguaje no cambia — solo la dificultad.</div>
+                </div>
+
+                <div class="scrolly-panel panel-interactive" data-pattern="3" id="panel-4">
+                    <span class="panel-num">Ahora tú</span>
+                    <h2>Escribe cualquier patrón.</h2>
+                    <p>El simulador valida al instante si es matemáticamente posible.</p>
+                    <div class="inline-controls">
+                        <div class="input-group">
+                            <input type="text" id="siteswapInput" placeholder="Ej: 441" maxlength="20">
+                            <button class="btn btn-primary" id="playBtn"><i class="ph-fill ph-play"></i> Simular</button>
+                            <button class="btn btn-ghost" id="stopBtn"><i class="ph-fill ph-stop-circle"></i></button>
+                        </div>
+                        <div class="preset-buttons">
+                            <button class="preset-btn" data-pattern="3">3 · Cascade</button>
+                            <button class="preset-btn" data-pattern="51">51 · Shower</button>
+                            <button class="preset-btn" data-pattern="531">531</button>
+                            <button class="preset-btn" data-pattern="441">441</button>
+                            <button class="preset-btn" data-pattern="5">5 · 5-ball</button>
+                            <button class="preset-btn" data-pattern="744">744</button>
+                            <button class="preset-btn" data-pattern="97531">97531</button>
+                        </div>
+                        <div class="speed-control" id="speedControl">
+                            <span class="speed-label">Velocidad:</span>
+                            <button class="speed-btn" data-speed="0.5">Lento</button>
+                            <button class="speed-btn active" data-speed="1">Normal</button>
+                            <button class="speed-btn" data-speed="1.8">Rápido</button>
+                        </div>
+                    </div>
+                    <div class="panel-callout">Regla: promedio de dígitos = número de bolas · sin colisiones entre bolas.</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================== CHAPTER BREAK 2 ===================== -->
+        <div class="chapter-break" id="cap-patrones" data-chapter="2" data-num="02">
+            <div class="cb-inner">
+                <span class="cb-label">Capítulo</span>
+                <div class="cb-num">02</div>
+                <h2 class="cb-title">Los patrones</h2>
+                <p class="cb-sub">De 3 bolas a 9 · Del principiante al élite</p>
+            </div>
+        </div>
+
+        <!-- ===================== PATTERNS ===================== -->
+        <section class="patterns" id="patrones">
+            <div class="container">
+                <h2 class="section-title fade-in">Cada número es <span class="highlight">una puerta</span>.</h2>
+                <p class="section-subtitle fade-in">Empieza por el 3. El mundo del malabarismo se expande desde ahí.</p>
+
+                <div class="patterns-by-balls">
+                    <div class="balls-section fade-in">
+                        <h3><i class="ph-fill ph-circle"></i> 1–2 Bolas · Fundamentos</h3>
+                        <div class="trick-list">
+                            <div class="trick-item">
+                                <span class="trick-code">1</span>
+                                <span class="trick-name">Pass</span>
+                                <span class="trick-desc">Pase simple de mano en mano</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">2</span>
+                                <span class="trick-name">Hold</span>
+                                <span class="trick-desc">La bola permanece en la misma mano</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">31</span>
+                                <span class="trick-name">Shower 2b</span>
+                                <span class="trick-desc">Ducha con dos bolas</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">40</span>
+                                <span class="trick-name">Column</span>
+                                <span class="trick-desc">Columnas paralelas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balls-section fade-in">
+                        <h3><i class="ph-fill ph-baseball"></i> 3 Bolas · El núcleo</h3>
+                        <div class="trick-list">
+                            <div class="trick-item">
+                                <span class="trick-code">3</span>
+                                <span class="trick-name">Cascade</span>
+                                <span class="trick-desc">El patrón base. Todo empieza aquí.</span>
+                                <span class="difficulty-badge easy">Principiante</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">423</span>
+                                <span class="trick-name">Burke's Barrage</span>
+                                <span class="trick-desc">Punto de partida para tricks complejos</span>
+                                <span class="difficulty-badge easy">Principiante</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">51</span>
+                                <span class="trick-name">Shower</span>
+                                <span class="trick-desc">Círculo rápido — alta y baja</span>
+                                <span class="difficulty-badge medium">Intermedio</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">441</span>
+                                <span class="trick-name">Mills Mess base</span>
+                                <span class="trick-desc">Fundamento del Mills Mess clásico</span>
+                                <span class="difficulty-badge medium">Intermedio</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">531</span>
+                                <span class="trick-name">531</span>
+                                <span class="trick-desc">Asimétrico, muy visual</span>
+                                <span class="difficulty-badge medium">Intermedio</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">50505</span>
+                                <span class="trick-name">Flash</span>
+                                <span class="trick-desc">Las 3 bolas en el aire a la vez</span>
+                                <span class="difficulty-badge medium">Intermedio</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">744</span>
+                                <span class="trick-name">Box</span>
+                                <span class="trick-desc">Patrón cuadrado con pausas</span>
+                                <span class="difficulty-badge hard">Avanzado</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">7531</span>
+                                <span class="trick-name">7531</span>
+                                <span class="trick-desc">Alturas dramáticamente variadas</span>
+                                <span class="difficulty-badge hard">Avanzado</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balls-section fade-in">
+                        <h3><i class="ph-fill ph-number-square-four"></i> 4 Bolas · Doblar la dificultad</h3>
+                        <div class="trick-list">
+                            <div class="trick-item">
+                                <span class="trick-code">4</span>
+                                <span class="trick-name">Fountain</span>
+                                <span class="trick-desc">Fuente simétrica. Base de 4 bolas.</span>
+                                <span class="difficulty-badge easy">Principiante</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">534</span>
+                                <span class="trick-name">534</span>
+                                <span class="trick-desc">Mix de alturas</span>
+                                <span class="difficulty-badge medium">Intermedio</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">53</span>
+                                <span class="trick-name">Half Shower</span>
+                                <span class="trick-desc">Media ducha asimétrica</span>
+                                <span class="difficulty-badge medium">Intermedio</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">5551</span>
+                                <span class="trick-name">5551</span>
+                                <span class="trick-desc">Flash de 4 bolas con pausa</span>
+                                <span class="difficulty-badge hard">Avanzado</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balls-section fade-in">
+                        <h3><i class="ph-fill ph-number-square-five"></i> 5+ Bolas · Territorio élite</h3>
+                        <div class="trick-list">
+                            <div class="trick-item">
+                                <span class="trick-code">5</span>
+                                <span class="trick-name">5-ball Cascade</span>
+                                <span class="trick-desc">El objetivo de todo juggler serio</span>
+                                <span class="difficulty-badge hard">Avanzado</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">7</span>
+                                <span class="trick-name">7-ball Cascade</span>
+                                <span class="trick-desc">Dominio absoluto del timing</span>
+                                <span class="difficulty-badge hard">Élite</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">97531</span>
+                                <span class="trick-name">97531</span>
+                                <span class="trick-desc">5 bolas, alturas radicalmente variadas</span>
+                                <span class="difficulty-badge hard">Élite</span>
+                            </div>
+                            <div class="trick-item">
+                                <span class="trick-code">9</span>
+                                <span class="trick-name">9-ball Cascade</span>
+                                <span class="trick-desc">Logrado por menos de 20 personas en el mundo</span>
+                                <span class="difficulty-badge hard">Mundial</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== CHAPTER BREAK 3 ===================== -->
+        <div class="chapter-break" id="cap-disciplinas" data-chapter="3" data-num="03">
+            <div class="cb-inner">
+                <span class="cb-label">Capítulo</span>
+                <div class="cb-num">03</div>
+                <h2 class="cb-title">Las disciplinas</h2>
+                <p class="cb-sub">Bolas · Anillas · Clavas · Diabolos · Pañuelos</p>
+            </div>
+        </div>
+
+        <!-- ===================== TYPES ===================== -->
+        <section class="types" id="modalidades">
+            <div class="container">
+                <h2 class="section-title fade-in">El siteswap nació con bolas.<br><span class="highlight">Vive en todo lo demás.</span></h2>
+                <p class="section-subtitle fade-in">Cada disciplina tiene su física, su comunidad y su curva de aprendizaje.</p>
+                <div class="types-grid">
+                    <div class="type-card fade-in">
+                        <div class="type-icon"><i class="ph-fill ph-circle"></i></div>
+                        <h3>Bolas</h3>
+                        <p>La entrada más accesible. Silicona, cuero, arena, agua. Cada material cambia el grip y el rebote.</p>
+                        <div class="type-meta">
+                            <span class="type-tag">Siteswap directo</span>
+                            <span class="type-tag easy">Para empezar</span>
+                        </div>
+                    </div>
+                    <div class="type-card fade-in">
+                        <div class="type-icon"><i class="ph-fill ph-ring"></i></div>
+                        <h3>Anillas</h3>
+                        <p>Anillos planos de plástico o madera. Más rotación, más control de plano.</p>
+                        <div class="type-meta">
+                            <span class="type-tag">Siteswap aplicable</span>
+                            <span class="type-tag medium">Intermedio</span>
+                        </div>
+                    </div>
+                    <div class="type-card fade-in">
+                        <div class="type-icon"><i class="ph-fill ph-lightning"></i></div>
+                        <h3>Clavas</h3>
+                        <p>El objeto del malabarismo profesional. El spin añade una variable extra al siteswap.</p>
+                        <div class="type-meta">
+                            <span class="type-tag">Siteswap + spin</span>
+                            <span class="type-tag medium">Intermedio</span>
+                        </div>
+                    </div>
+                    <div class="type-card fade-in">
+                        <div class="type-icon"><i class="ph-fill ph-arrows-clockwise"></i></div>
+                        <h3>Diabolos</h3>
+                        <p>Un carrete girando en una cuerda. Control de eje, aceleración y tricks aéreos.</p>
+                        <div class="type-meta">
+                            <span class="type-tag">Física de giroscopio</span>
+                            <span class="type-tag medium">Intermedio</span>
+                        </div>
+                    </div>
+                    <div class="type-card fade-in">
+                        <div class="type-icon"><i class="ph-fill ph-wind"></i></div>
+                        <h3>Pañuelos</h3>
+                        <p>Caen cuatro veces más lento que las bolas. Perfectos para aprender timing sin presión.</p>
+                        <div class="type-meta">
+                            <span class="type-tag">Cae lento</span>
+                            <span class="type-tag easy">Para empezar</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="types-comparison fade-in">
+                    <h3>¿Por dónde empezar?</h3>
+                    <p>Si nunca has malabarizado: <strong>pañuelos → bolas de silicona → clavas</strong>. Si ya haces cascade con 3 bolas: el siteswap te desbloqueará decenas de patrones nuevos sin comprar nada más.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== CHAPTER BREAK 4 ===================== -->
+        <div class="chapter-break" id="cap-origenes" data-chapter="4" data-num="04">
+            <div class="cb-inner">
+                <span class="cb-label">Capítulo</span>
+                <div class="cb-num">04</div>
+                <h2 class="cb-title">Los orígenes</h2>
+                <p class="cb-sub">4.000 a.C. → 1985 → hoy</p>
+            </div>
+        </div>
+
+        <!-- ===================== HISTORY ===================== -->
+        <section class="history" id="historia">
+            <div class="container">
+                <h2 class="section-title fade-in">Cuando una idea está lista para nacer,<br><span class="highlight">nace tres veces a la vez.</span></h2>
+                <p class="section-subtitle fade-in">La historia de cómo tres grupos en tres continentes llegaron a la misma notación en el mismo año — sin conocerse.</p>
+                <div class="timeline">
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">4000+ a.C.</div>
+                        <div class="timeline-content">
+                            <h3>Orígenes en Egipto</h3>
+                            <p>Las primeras representaciones de malabarismo aparecen en las tumbas de Beni Hasan. Malabaristas profesionales ya existían en la corte faraónica.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">~1000 a.C.</div>
+                        <div class="timeline-content">
+                            <h3>China: Lan Zi y las 7 espadas</h3>
+                            <p>El texto taoísta <em>Lie Zi</em> documenta a Lan Zi manteniendo 7 espadas en el aire simultáneamente. Primera referencia documentada de malabarismo en Asia.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">Siglo I d.C.</div>
+                        <div class="timeline-content">
+                            <h3>Roma: los Pilarii</h3>
+                            <p>Los <em>Pilarii</em> son figuras habituales en los anfiteatros romanos. Plinio el Viejo los menciona en sus escritos. El malabarismo se consolida como entretenimiento profesional.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">Siglo XII</div>
+                        <div class="timeline-content">
+                            <h3>El Juglar Medieval</h3>
+                            <p>Nace la figura del <em>jongleur</em> europeo. El término inglés "juggler" viene del latín <em>joculator</em> — el que hace reír. El oficio llega a tener status legal propio en varios reinos.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">1768</div>
+                        <div class="timeline-content">
+                            <h3>El Primer Circo Moderno</h3>
+                            <p>Philip Astley funda el primer circo moderno en Londres. El malabarismo pasa de oficio ambulante a disciplina artística con técnica sistemática.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">1947</div>
+                        <div class="timeline-content">
+                            <h3>Nace la IJA</h3>
+                            <p>Se funda la International Jugglers' Association en Estados Unidos. Por primera vez, malabaristas de todo el mundo tienen una organización formal. El inicio de la comunidad global moderna.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">1981</div>
+                        <div class="timeline-content">
+                            <h3>Claude Shannon</h3>
+                            <p>El padre de la teoría de la información escribe "Scientific Aspects of Juggling" pero no lo publica. El manuscrito se descubre en sus archivos en 2010.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">1985</div>
+                        <div class="timeline-content">
+                            <h3>El Descubrimiento Triple</h3>
+                            <p><strong>3 grupos simultáneamente:</strong> Bruce Tiemann (Caltech, California), Paul Klimek (Santa Cruz), y Mike Day + Colin Wright (Cambridge, UK). Sin conocerse, los tres llegan a la misma notación.</p>
+                            <p class="history-note">Cuando una idea está lista para nacer, nace. La innovación no espera a un solo genio.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">1988</div>
+                        <div class="timeline-content">
+                            <h3>El Primer Animador</h3>
+                            <p>Allen Knutson escribe el primer programa que anima siteswaps. Se distribuye por lista de correo — el primer "juggling software".</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">1991</div>
+                        <div class="timeline-content">
+                            <h3>El Artículo Fundamental</h3>
+                            <p>"A Notation for Juggling Tricks. A LOT of Juggling Tricks" establece las bases teóricas completas del siteswap como sistema matemático.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">2000s</div>
+                        <div class="timeline-content">
+                            <h3>JugglingLab</h3>
+                            <p>La herramienta más usada hoy para diseñar y visualizar siteswaps. Gratuita, de código abierto, usada por miles de jugglers.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-date">Hoy</div>
+                        <div class="timeline-content">
+                            <h3>Comunidad Global</h3>
+                            <p>Campeonatos mundiales, YouTube, Reddit, Discord. El siteswap es el idioma común de una comunidad de cientos de miles.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="history-quote fade-in">
+                    <blockquote>"La idea es simple: escribir el número de lanzamientos que ocurrirán antes de que la bola sea atrapada de nuevo."</blockquote>
+                    <cite>— Bruce Tiemann, sobre el siteswap</cite>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== CHAPTER BREAK 5 ===================== -->
+        <div class="chapter-break" id="cap-ciencia" data-chapter="5" data-num="05">
+            <div class="cb-inner">
+                <span class="cb-label">Capítulo</span>
+                <div class="cb-num">05</div>
+                <h2 class="cb-title">La ciencia</h2>
+                <p class="cb-sub">Física · Matemáticas · El Teorema de Shannon</p>
+            </div>
+        </div>
+
+        <!-- ===================== PHYSICS ===================== -->
+        <section class="physics-section" id="fisica">
+            <div class="container">
+                <h2 class="section-title fade-in">Cada trayectoria<br><span class="highlight">obedece leyes exactas.</span></h2>
+                <p class="section-subtitle fade-in">Entender la física no es opcional — es lo que permite progresar con intención, no por azar.</p>
+                <div class="physics-grid">
+                    <div class="physics-card fade-in">
+                        <h3><i class="ph-fill ph-calculator"></i> Teorema de Shannon</h3>
+                        <div class="formula">b/h = (d + f) / (d + e)</div>
+                        <p><strong>b</strong> = bolas · <strong>h</strong> = manos · <strong>d</strong> = agarre · <strong>f</strong> = vuelo · <strong>e</strong> = vacío</p>
+                        <p class="physics-note">Determina la relación mínima entre manos y bolas para un patrón estable.</p>
+                    </div>
+                    <div class="physics-card fade-in">
+                        <h3><i class="ph-fill ph-arrow-up"></i> Tiempo de Vuelo</h3>
+                        <div class="formula">t = √(8H / g)</div>
+                        <p><strong>H</strong> = altura máxima · <strong>g</strong> = 9.81 m/s²</p>
+                        <p class="physics-note">Para 1m de altura: t ≈ 0.9 s. Para 2m: t ≈ 1.27 s. La altura dicta el ritmo.</p>
+                    </div>
+                    <div class="physics-card fade-in">
+                        <h3><i class="ph-fill ph-arrows-horizontal"></i> Velocidad Horizontal</h3>
+                        <div class="formula">Vh = F / t</div>
+                        <p><strong>F</strong> = distancia entre manos · <strong>t</strong> = tiempo de vuelo</p>
+                        <p class="physics-note">Para 80cm y 0.5s de vuelo: Vh = 1.6 m/s. El ancho de lanzamiento impacta el ritmo.</p>
+                    </div>
+                    <div class="physics-card fade-in">
+                        <h3><i class="ph-fill ph-chart-line-up"></i> Número de Bolas</h3>
+                        <div class="formula">n = Σ(siteswap) / período</div>
+                        <p>El promedio del siteswap es siempre exacto para patrones válidos.</p>
+                        <p class="physics-note">531: (5+3+1)/3 = 3 ✓ &nbsp;|&nbsp; 97531: (9+7+5+3+1)/5 = 5 ✓</p>
+                    </div>
+                </div>
+                <div class="physics-example fade-in">
+                    <h3><i class="ph-fill ph-flask"></i> Cascade con 3 bolas (patrón "3")</h3>
+                    <div class="physics-table">
+                        <div class="phys-row"><span>Bolas</span><strong>3</strong></div>
+                        <div class="phys-row"><span>Altura típica</span><strong>0.8 – 1.2 m</strong></div>
+                        <div class="phys-row"><span>Tiempo por beat</span><strong>~0.38 s</strong></div>
+                        <div class="phys-row"><span>Tiempo en aire por bola</span><strong>~0.9 – 1.1 s</strong></div>
+                        <div class="phys-row"><span>Bolas simultáneas en aire</span><strong>1 – 2</strong></div>
+                        <div class="phys-row"><span>Lanzamientos por minuto</span><strong>~80</strong></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== CHAPTER BREAK 6 ===================== -->
+        <div class="chapter-break" id="cap-experto" data-chapter="6" data-num="06">
+            <div class="cb-inner">
+                <span class="cb-label">Capítulo</span>
+                <div class="cb-num">06</div>
+                <h2 class="cb-title">El nivel experto</h2>
+                <p class="cb-sub">Síncrono · Multiplex · Transiciones</p>
+            </div>
+        </div>
+
+        <!-- ===================== ADVANCED ===================== -->
+        <section class="advanced" id="avanzado">
+            <div class="container">
+                <h2 class="section-title fade-in">Cuando dominas el lenguaje,<br><span class="highlight">el lenguaje se expande.</span></h2>
+                <p class="section-subtitle fade-in">El siteswap puede describir cualquier patrón imaginable — incluyendo muchos que nadie ha logrado ejecutar aún.</p>
+                <div class="advanced-content">
+                    <div class="advanced-card fade-in">
+                        <h3><i class="ph-fill ph-swap"></i> Síncrono vs Asíncrono</h3>
+                        <div class="notation-box">
+                            <h4>Asíncrono (estándar)</h4>
+                            <code>3 · 531 · 441 · 97531</code>
+                            <p>Las manos alternan: derecha, izquierda, derecha... Todos los patrones que hemos visto.</p>
+                        </div>
+                        <div class="notation-box">
+                            <h4>Síncrono</h4>
+                            <code>(4,2x)(2x,4)</code>
+                            <p>Ambas manos lanzan simultáneamente. Los paréntesis separan la acción de cada mano. La "x" indica cruce.</p>
+                        </div>
+                        <div class="notation-box">
+                            <h4>Ejemplos síncronos</h4>
+                            <code>(4,4) · (6,2x)(2x,6) · (4x,4x)</code>
+                            <p>La fuente síncrona, el shower síncrono, y el cascade síncrono.</p>
+                        </div>
+                    </div>
+                    <div class="advanced-card fade-in">
+                        <h3><i class="ph-fill ph-stack"></i> Multiplex</h3>
+                        <div class="notation-box">
+                            <h4>Lanzar varias bolas a la vez</h4>
+                            <code>[33] · [43]3 · [54]24</code>
+                            <p>Los corchetes indican múltiples bolas lanzadas desde la misma mano en el mismo beat.</p>
+                        </div>
+                        <div class="notation-box">
+                            <h4>Ejemplo: [43]3</h4>
+                            <code>[43]3 = 4 bolas, período 2</code>
+                            <p>Una mano lanza dos bolas (una "4" y una "3"), la otra lanza una "3". Requiere dominio de agarre múltiple.</p>
+                        </div>
+                    </div>
+                    <div class="advanced-card fade-in">
+                        <h3><i class="ph-fill ph-pause-circle"></i> Patrones con Pausas</h3>
+                        <div class="notation-box">
+                            <h4>El 0 = mano vacía</h4>
+                            <code>50505 · 7050 · 504</code>
+                            <p>El "0" significa que la mano no lanza nada. Crea "flashes" donde todas las bolas están en el aire.</p>
+                        </div>
+                        <div class="notation-box">
+                            <h4>Flash de 3 bolas</h4>
+                            <code>50505 = 3 bolas en aire a la vez</code>
+                            <p>Lanza una "5" (alta), ambas manos vacías, las 3 bolas regresan. El truco del "suelto todas".</p>
+                        </div>
+                    </div>
+                    <div class="advanced-card fade-in">
+                        <h3><i class="ph-fill ph-path"></i> Transiciones entre Patrones</h3>
+                        <div class="notation-box">
+                            <h4>De cascade (3) a shower (51)</h4>
+                            <code>3 → 531 → 51</code>
+                            <p>El "531" funciona como transición natural. Combina elementos de ambos patrones.</p>
+                        </div>
+                        <div class="notation-box">
+                            <h4>De 3 a 4 bolas</h4>
+                            <code>3 → 5551 → 4</code>
+                            <p>El "5551" es la entrada estándar para 4 bolas desde el cascade de 3.</p>
+                        </div>
+                        <div class="notation-box">
+                            <h4>Rutinas continuas</h4>
+                            <code>3 → 441 → 531 → 51 → 3</code>
+                            <p>El siteswap permite diseñar rutinas completas con transiciones matemáticamente válidas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== CHAPTER BREAK 7 ===================== -->
+        <div class="chapter-break" id="cap-practica" data-chapter="7" data-num="07">
+            <div class="cb-inner">
+                <span class="cb-label">Capítulo</span>
+                <div class="cb-num">07</div>
+                <h2 class="cb-title">La práctica</h2>
+                <p class="cb-sub">Consistencia · Proceso · El método que funciona</p>
+            </div>
+        </div>
+
+        <!-- ===================== TIPS ===================== -->
+        <section class="tips" id="tips">
+            <div class="container">
+                <h2 class="section-title fade-in">El talento no es el punto de partida.<br><span class="highlight">El proceso sí lo es.</span></h2>
+                <p class="section-subtitle fade-in">La diferencia entre quien mejora y quien no raramente es talento. Es consistencia. El proceso tiene reglas claras.</p>
+                <div class="tips-grid">
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-timer"></i></div>
+                        <div class="tip-content">
+                            <h3>20 minutos diarios ganan a 3 horas semanales</h3>
+                            <p>La consistencia construye redes neuronales. El malabarismo es memoria muscular — necesita repetición espaciada, no intensidad ocasional.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-tortoise"></i></div>
+                        <div class="tip-content">
+                            <h3>Lento es correcto. Rápido viene después.</h3>
+                            <p>Practica al ritmo que puedes hacer el patrón limpio. El cerebro aprende el movimiento que repites — si repites errores, aprende errores.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-video-camera"></i></div>
+                        <div class="tip-content">
+                            <h3>Grábate. La cámara no miente.</h3>
+                            <p>Lo que sientes que haces y lo que realmente haces son cosas distintas. Un video de 30 segundos revela más que una hora de práctica sin feedback.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-brain"></i></div>
+                        <div class="tip-content">
+                            <h3>El descanso es parte del aprendizaje</h3>
+                            <p>Tu cerebro consolida lo aprendido mientras duermes. Practicar con cansancio no consolida habilidades — las degrada.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-fire"></i></div>
+                        <div class="tip-content">
+                            <h3>La frustración es la señal correcta</h3>
+                            <p>Si algo te frustra, estás en el límite de tu zona de confort. Ahí es exactamente donde ocurre el aprendizaje.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-users-three"></i></div>
+                        <div class="tip-content">
+                            <h3>La comunidad acelera 10x</h3>
+                            <p>Un juggler más avanzado puede ver en 5 minutos lo que tú no ves en meses. Busca convenciones, grupos locales, coaches online.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-bullseye"></i></div>
+                        <div class="tip-content">
+                            <h3>Un objetivo concreto a la vez</h3>
+                            <p>"Quiero aprender malabarismo" no es un objetivo. "20 catches del 531 esta semana" sí lo es. La especificidad hace el progreso medible.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-tools"></i></div>
+                        <div class="tip-content">
+                            <h3>Domina los fundamentos. Siempre.</h3>
+                            <p>Los mejores jugglers del mundo hacen cascade básico en cada sesión. Los fundamentos sólidos son el cimiento de todo lo avanzado.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-confetti"></i></div>
+                        <div class="tip-content">
+                            <h3>Celebra los pequeños logros</h3>
+                            <p>Diez catches seguidos de un patrón nuevo es un logro real. El progreso es exponencial — lento al principio, acelerado después.</p>
+                        </div>
+                    </div>
+                    <div class="tip-card fade-in">
+                        <div class="tip-icon"><i class="ph-fill ph-faders"></i></div>
+                        <div class="tip-content">
+                            <h3>Empieza con 5 minutos</h3>
+                            <p>No necesitas una sesión perfecta. Cinco minutos de práctica real superan en valor a una hora que nunca ocurre.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="discipline-quote fade-in">
+                    <blockquote>"No esperes a sentirte listo. Empieza, y la claridad llegará con el movimiento."</blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== OUTRO ===================== -->
+        <section class="outro" id="outro">
+            <div class="outro-bg">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+            </div>
+            <div class="outro-content">
+                <p class="outro-eyebrow">JugglingFlow</p>
+                <h2 class="outro-title">La idea lleva<br><span class="highlight">40 años esperándote.</span></h2>
+                <p class="outro-sub">Tres bolas. Un número. Un movimiento.</p>
+                <div class="outro-actions">
+                    <a href="#siteswap" class="btn btn-primary btn-large">Volver al simulador</a>
+                    <a href="#cap-lenguaje" class="btn btn-ghost btn-large">Releer desde el inicio</a>
+                </div>
+                <div class="outro-links">
+                    <a href="https://jugglingdb.com" target="_blank" rel="noopener">Internet Juggling Database</a>
+                    <span>·</span>
+                    <a href="https://jugglinglab.org" target="_blank" rel="noopener">JugglingLab</a>
+                    <span>·</span>
+                    <a href="https://juggling.org" target="_blank" rel="noopener">IJA</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/sileo.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
