@@ -20,7 +20,7 @@ const PATTERN_GROUPS = [
             { code: '441',   name: 'Mills Mess base', desc: 'Fundamento del Mills Mess clásico',       badge: 'medium', bl: 'Intermedio' },
             { code: '531',   name: '531',             desc: 'Asimétrico, muy visual',                  badge: 'medium', bl: 'Intermedio' },
             { code: '50505', name: 'Flash',           desc: 'Las 3 bolas en el aire a la vez',         badge: 'medium', bl: 'Intermedio' },
-            { code: '744',   name: 'Box',             desc: 'Patrón cuadrado con pausas',              badge: 'hard',   bl: 'Avanzado' },
+            { code: '612',   name: 'Box',             desc: 'Patrón cuadrado con pausas',              badge: 'hard',   bl: 'Avanzado' },
             { code: '7531',  name: '7531',            desc: 'Alturas dramáticamente variadas',         badge: 'hard',   bl: 'Avanzado' },
         ]
     },
