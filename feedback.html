@@ -250,7 +250,8 @@
             fbSubmit.innerHTML = '<i class="ph-fill ph-paper-plane-tilt"></i> Enviar feedback';
 
             if (error) {
-                showStatus('error', 'Error al enviar. Intenta de nuevo.');
+                console.error('Supabase error:', error);
+                showStatus('error', `Error: ${error.message || error.code || 'desconocido'}`);
             } else {
                 markSent();
                 document.getElementById('fbFormWrap').style.display = 'none';
