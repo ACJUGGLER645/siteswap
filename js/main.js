@@ -1,4 +1,143 @@
+// =====================
+// PATTERN DATA — carrusel Cap 02
+// =====================
+const PATTERN_GROUPS = [
+    {
+        label: '1–2 Bolas', sub: 'Fundamentos',
+        patterns: [
+            { code: '1',  name: 'Pass',       desc: 'Pase simple de mano en mano' },
+            { code: '2',  name: 'Hold',        desc: 'La bola permanece en la misma mano' },
+            { code: '31', name: 'Shower 2b',   desc: 'Ducha con dos bolas' },
+            { code: '40', name: 'Column',      desc: 'Columnas paralelas' },
+        ]
+    },
+    {
+        label: '3 Bolas', sub: 'El núcleo',
+        patterns: [
+            { code: '3',     name: 'Cascade',        desc: 'El patrón base. Todo empieza aquí.',       badge: 'easy',   bl: 'Principiante' },
+            { code: '423',   name: "Burke's Barrage", desc: 'Punto de partida para tricks complejos',  badge: 'easy',   bl: 'Principiante' },
+            { code: '51',    name: 'Shower',          desc: 'Círculo rápido — alta y baja',            badge: 'medium', bl: 'Intermedio' },
+            { code: '441',   name: 'Mills Mess base', desc: 'Fundamento del Mills Mess clásico',       badge: 'medium', bl: 'Intermedio' },
+            { code: '531',   name: '531',             desc: 'Asimétrico, muy visual',                  badge: 'medium', bl: 'Intermedio' },
+            { code: '50505', name: 'Flash',           desc: 'Las 3 bolas en el aire a la vez',         badge: 'medium', bl: 'Intermedio' },
+            { code: '744',   name: 'Box',             desc: 'Patrón cuadrado con pausas',              badge: 'hard',   bl: 'Avanzado' },
+            { code: '7531',  name: '7531',            desc: 'Alturas dramáticamente variadas',         badge: 'hard',   bl: 'Avanzado' },
+        ]
+    },
+    {
+        label: '4 Bolas', sub: 'Doblar la dificultad',
+        patterns: [
+            { code: '4',    name: 'Fountain',    desc: 'Fuente simétrica. Base de 4 bolas.',  badge: 'easy',   bl: 'Principiante' },
+            { code: '534',  name: '534',          desc: 'Mix de alturas',                     badge: 'medium', bl: 'Intermedio' },
+            { code: '53',   name: 'Half Shower',  desc: 'Media ducha asimétrica',             badge: 'medium', bl: 'Intermedio' },
+            { code: '5551', name: '5551',          desc: 'Flash de 4 bolas con pausa',        badge: 'hard',   bl: 'Avanzado' },
+        ]
+    },
+    {
+        label: '5+ Bolas', sub: 'Territorio élite',
+        patterns: [
+            { code: '5',     name: '5-ball Cascade', desc: 'El objetivo de todo juggler serio',             badge: 'hard', bl: 'Avanzado' },
+            { code: '7',     name: '7-ball Cascade', desc: 'Dominio absoluto del timing',                   badge: 'hard', bl: 'Élite' },
+            { code: '97531', name: '97531',           desc: '5 bolas, alturas radicalmente variadas',       badge: 'hard', bl: 'Élite' },
+            { code: '9',     name: '9-ball Cascade', desc: 'Logrado por menos de 20 personas en el mundo',  badge: 'hard', bl: 'Mundial' },
+        ]
+    },
+];
+
+function buildCarousels() {
+    const container = document.getElementById('patternCarousels');
+    if (!container) return;
+    container.innerHTML = PATTERN_GROUPS.map((g, gi) => `
+        <div class="pattern-group fade-in" data-group="${gi}">
+            <div class="pg-header">
+                <h3 class="pg-title">${g.label} <span class="pg-sub">· ${g.sub}</span></h3>
+                <div class="pg-controls">
+                    <button class="pg-btn pg-prev" data-group="${gi}" aria-label="Anterior">&#8249;</button>
+                    <span class="pg-counter"><span class="pg-cur">1</span>/${g.patterns.length}</span>
+                    <button class="pg-btn pg-next" data-group="${gi}" aria-label="Siguiente">&#8250;</button>
+                </div>
+            </div>
+            <div class="pg-track-wrap">
+                <div class="pg-track" data-group="${gi}" data-current="0">
+                    ${g.patterns.map((p, pi) => `
+                    <div class="pg-slide${pi === 0 ? ' active' : ''}" data-pattern="${p.code}">
+                        <div class="pg-jlab-wrap">
+                            <div class="pg-jlab-idle"${pi === 0 ? ' style="display:none"' : ''}><i class="ph-fill ph-circles-three"></i></div>
+                            <div class="pg-jlab-loading" style="display:none"><div class="jlab-spinner"></div></div>
+                            <img class="pg-jlab-img" alt="${p.name}" data-pattern="${p.code}" data-loaded="false" style="display:none">
+                        </div>
+                        <div class="pg-info">
+                            <code class="pg-code">${p.code}</code>
+                            <h4 class="pg-name">${p.name}</h4>
+                            <p class="pg-desc">${p.desc}</p>
+                            ${p.badge ? `<span class="difficulty-badge ${p.badge}">${p.bl}</span>` : ''}
+                        </div>
+                    </div>`).join('')}
+                </div>
+            </div>
+            <div class="pg-dots">
+                ${g.patterns.map((_, pi) => `<button class="pg-dot${pi === 0 ? ' active' : ''}" data-group="${gi}" data-slide="${pi}"></button>`).join('')}
+            </div>
+        </div>`).join('');
+
+    PATTERN_GROUPS.forEach((_, gi) => goToSlide(gi, 0));
+
+    document.querySelectorAll('.pg-prev').forEach(btn =>
+        btn.addEventListener('click', () => {
+            const gi = +btn.dataset.group, total = PATTERN_GROUPS[gi].patterns.length;
+            goToSlide(gi, (getCurrentSlide(gi) - 1 + total) % total);
+        })
+    );
+    document.querySelectorAll('.pg-next').forEach(btn =>
+        btn.addEventListener('click', () => {
+            const gi = +btn.dataset.group, total = PATTERN_GROUPS[gi].patterns.length;
+            goToSlide(gi, (getCurrentSlide(gi) + 1) % total);
+        })
+    );
+    document.querySelectorAll('.pg-dot').forEach(dot =>
+        dot.addEventListener('click', () => goToSlide(+dot.dataset.group, +dot.dataset.slide))
+    );
+}
+
+function getCurrentSlide(gi) {
+    return +(document.querySelector(`.pg-track[data-group="${gi}"]`)?.dataset.current || 0);
+}
+
+function goToSlide(gi, si) {
+    const group  = document.querySelector(`.pattern-group[data-group="${gi}"]`);
+    const track  = group?.querySelector('.pg-track');
+    const slides = group?.querySelectorAll('.pg-slide');
+    const dots   = group?.querySelectorAll('.pg-dot');
+    const cur    = group?.querySelector('.pg-cur');
+    if (!track || !slides) return;
+
+    track.dataset.current = si;
+    slides.forEach((s, i) => s.classList.toggle('active', i === si));
+    dots?.forEach((d, i)  => d.classList.toggle('active', i === si));
+    if (cur) cur.textContent = si + 1;
+
+    const activeSlide = slides[si];
+    const img = activeSlide?.querySelector('.pg-jlab-img');
+    if (img && img.dataset.loaded === 'false') loadSlideJlab(activeSlide, img.dataset.pattern);
+}
+
+function loadSlideJlab(slide, pattern) {
+    const img     = slide.querySelector('.pg-jlab-img');
+    const idle    = slide.querySelector('.pg-jlab-idle');
+    const loading = slide.querySelector('.pg-jlab-loading');
+    if (!img) return;
+    img.dataset.loaded = 'loading';
+    if (idle)    idle.style.display    = 'none';
+    if (loading) loading.style.display = 'flex';
+    const url = `https://jugglinglab.org/anim?pattern=${encodeURIComponent(pattern)};redirect=true`;
+    img.onload  = () => { img.dataset.loaded = 'true';  if (loading) loading.style.display = 'none'; img.style.display = 'block'; };
+    img.onerror = () => { img.dataset.loaded = 'error'; if (loading) loading.style.display = 'none'; if (idle) { idle.innerHTML = '<i class="ph-fill ph-wifi-x"></i>'; idle.style.display = 'flex'; } };
+    img.src = url;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    buildCarousels();
 
     // =====================
     // THEME TOGGLE
@@ -500,8 +639,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // viewport's 40% mark (slightly above center feels more natural).
     // More reliable than IntersectionObserver threshold for tall panels.
     // =====================
-    const scrollySection  = document.querySelector('.scrolly-section');
-    const scrollyPanels   = document.querySelectorAll('.scrolly-panel');
+    const scrollySection  = document.querySelector('.scrolly-section:not(.expert-scrolly)');
+    const scrollyPanels   = scrollySection ? scrollySection.querySelectorAll('.scrolly-panel') : [];
     let lastActivePanel   = null;
 
     function getActivePanel() {
@@ -544,6 +683,64 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', tickScrollytelling, { passive: true });
     // Run once on load in case user arrives mid-page
     tickScrollytelling();
+
+    // =====================
+    // EXPERT SCROLLYTELLING (Cap 06 — 5, 97531, 7, 9 balls)
+    // =====================
+    const expertSection = document.querySelector('.expert-scrolly');
+    const expertPanels  = document.querySelectorAll('.expert-scrolly .scrolly-panel');
+    let lastExpertPattern = null;
+
+    function loadExpertJlab(pattern) {
+        const idle    = document.getElementById('expertIdle');
+        const loading = document.getElementById('expertLoading');
+        const img     = document.getElementById('expertImg');
+        if (!idle || !loading || !img) return;
+        idle.style.display    = 'none';
+        loading.style.display = 'flex';
+        img.style.display     = 'none';
+        const url = `https://jugglinglab.org/anim?pattern=${encodeURIComponent(pattern)};redirect=true`;
+        img.onload  = () => { loading.style.display = 'none'; img.style.display = 'block'; };
+        img.onerror = () => {
+            loading.style.display = 'none';
+            idle.innerHTML = '<i class="ph-fill ph-wifi-x"></i><span>Sin conexión</span>';
+            idle.style.display = 'flex';
+        };
+        img.src = url;
+    }
+
+    function getActiveExpertPanel() {
+        if (!expertSection) return null;
+        const sr = expertSection.getBoundingClientRect();
+        if (sr.bottom < 0 || sr.top > window.innerHeight) return null;
+        const focus = window.innerHeight * 0.42;
+        let best = null, bestDist = Infinity;
+        expertPanels.forEach(panel => {
+            const r = panel.getBoundingClientRect();
+            const visTop    = Math.max(r.top, 0);
+            const visBottom = Math.min(r.bottom, window.innerHeight);
+            if (visBottom <= visTop) return;
+            const panelMid = (r.top + r.bottom) / 2;
+            const dist     = Math.abs(panelMid - focus);
+            if (dist < bestDist) { bestDist = dist; best = panel; }
+        });
+        return best;
+    }
+
+    function tickExpertScrollytelling() {
+        const active = getActiveExpertPanel();
+        if (!active) return;
+        expertPanels.forEach(p => p.classList.remove('active'));
+        active.classList.add('active');
+        const pattern = active.dataset.pattern;
+        if (pattern && pattern !== lastExpertPattern) {
+            lastExpertPattern = pattern;
+            loadExpertJlab(pattern);
+        }
+    }
+
+    window.addEventListener('scroll', tickExpertScrollytelling, { passive: true });
+    tickExpertScrollytelling();
 
     // =====================
     // NEWSLETTER
@@ -695,5 +892,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loadComments();
+
+    // =====================
+    // SIMULADOR FINAL (#prueba)
+    // =====================
+    function loadFinalJlab(pattern) {
+        const idle    = document.getElementById('finalIdle');
+        const loading = document.getElementById('finalLoading');
+        const img     = document.getElementById('finalImg');
+        if (!idle || !loading || !img) return;
+        idle.style.display    = 'none';
+        loading.style.display = 'flex';
+        img.style.display     = 'none';
+        const url = `https://jugglinglab.org/anim?pattern=${encodeURIComponent(pattern)};redirect=true`;
+        img.onload  = () => { loading.style.display = 'none'; img.style.display = 'block'; };
+        img.onerror = () => {
+            loading.style.display = 'none';
+            idle.innerHTML = '<i class="ph-fill ph-wifi-x"></i><span>Sin conexión</span>';
+            idle.style.display = 'flex';
+        };
+        img.src = url;
+    }
+
+    document.getElementById('finalPlayBtn')?.addEventListener('click', () => {
+        const v = document.getElementById('finalInput')?.value.trim();
+        if (v) loadFinalJlab(v);
+    });
+    document.getElementById('finalInput')?.addEventListener('keypress', e => {
+        if (e.key === 'Enter') { const v = e.target.value.trim(); if (v) loadFinalJlab(v); }
+    });
+    document.querySelectorAll('.final-preset').forEach(b => {
+        b.addEventListener('click', () => {
+            document.querySelectorAll('.final-preset').forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            const fi = document.getElementById('finalInput');
+            if (fi) fi.value = b.dataset.p;
+            loadFinalJlab(b.dataset.p);
+        });
+    });
 
 });

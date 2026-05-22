@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback · JugglingFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Outfit:wght@600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .fb-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px;
+            background: var(--bg-primary);
+        }
+        .fb-page-inner {
+            width: 100%;
+            max-width: 680px;
+        }
+        .fb-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-family: var(--font-body);
+            text-decoration: none;
+            margin-bottom: 40px;
+            transition: color 0.2s;
+        }
+        .fb-back:hover { color: var(--color-primary); }
+        .fb-page-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+        .fb-page-sub {
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            margin-bottom: 40px;
+        }
+        .fb-success-msg {
+            text-align: center;
+            padding: 48px 24px;
+            display: none;
+        }
+        .fb-success-msg i { font-size: 3rem; color: #22c55e; display: block; margin-bottom: 16px; }
+        .fb-success-msg h2 { font-family: var(--font-display); font-size: 1.6rem; color: var(--text-primary); margin-bottom: 8px; }
+        .fb-success-msg p { color: var(--text-secondary); font-family: var(--font-body); margin-bottom: 24px; }
+        .fb-success-msg a { color: var(--color-primary); text-decoration: none; font-family: var(--font-body); font-weight: 500; }
+        .fb-success-msg a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div id="scrollProgress"></div>
+
+    <button id="themeToggle" aria-label="Cambiar tema">
+        <i class="ph-fill ph-moon" id="themeIcon"></i>
+    </button>
+
+    <div class="fb-page">
+        <div class="fb-page-inner">
+            <a href="index.html" class="fb-back">
+                <i class="ph-fill ph-arrow-left"></i> Volver a JugglingFlow
+            </a>
+
+            <div id="fbFormWrap">
+                <h1 class="fb-page-title">¿Qué te <span class="highlight">pareció</span>?</h1>
+                <p class="fb-page-sub">Tu experiencia con JugglingFlow nos ayuda a mejorar.</p>
+
+                <form id="feedbackForm" class="feedback-form" novalidate>
+                    <div class="form-group">
+                        <label for="fbNombre">Nombre (opcional)</label>
+                        <input type="text" id="fbNombre" placeholder="¿Cómo te llamas?" maxlength="60" autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label>Calificación</label>
+                        <div class="star-rating" id="starRating" role="group" aria-label="Calificación de 1 a 5">
+                            <button type="button" class="star" data-val="1" aria-label="1 estrella">★</button>
+                            <button type="button" class="star" data-val="2" aria-label="2 estrellas">★</button>
+                            <button type="button" class="star" data-val="3" aria-label="3 estrellas">★</button>
+                            <button type="button" class="star" data-val="4" aria-label="4 estrellas">★</button>
+                            <button type="button" class="star" data-val="5" aria-label="5 estrellas">★</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fbMensaje">Comentario *</label>
+                        <textarea id="fbMensaje" placeholder="¿Qué aprendiste? ¿Qué mejorarías?" rows="5" maxlength="500" required></textarea>
+                        <span class="char-count"><span id="charCount">0</span>/500</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="fbSubmit">
+                        <i class="ph-fill ph-paper-plane-tilt"></i> Enviar feedback
+                    </button>
+                    <div id="fbStatus" class="fb-status"></div>
+                </form>
+
+                <div class="feedback-comments" style="margin-top:48px">
+                    <h3>Opiniones recientes</h3>
+                    <div id="commentsList" class="comments-list">
+                        <div class="comments-loading">Cargando comentarios...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fb-success-msg" id="fbSuccessMsg">
+                <i class="ph-fill ph-check-circle"></i>
+                <h2>¡Gracias por tu feedback!</h2>
+                <p>Tu comentario ha sido enviado. Vuelve cuando quieras.</p>
+                <a href="index.html"><i class="ph-fill ph-arrow-left"></i> Volver a JugglingFlow</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="js/config.js"></script>
+    <script>
+    (function () {
+        // Theme — same key + logic as main.js
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon   = document.getElementById('themeIcon');
+        if (localStorage.getItem('jf-theme') === 'dark') {
+            document.body.classList.add('dark');
+            if (themeIcon) themeIcon.className = 'ph-fill ph-sun';
+        }
+        themeToggle?.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            if (themeIcon) themeIcon.className = isDark ? 'ph-fill ph-sun' : 'ph-fill ph-moon';
+            localStorage.setItem('jf-theme', isDark ? 'dark' : 'light');
+        });
+
+        const sbReady = typeof supabase !== 'undefined'
+            && typeof APP_CONFIG !== 'undefined'
+            && APP_CONFIG.supabaseUrl !== 'TU_SUPABASE_URL';
+        const sb = sbReady
+            ? supabase.createClient(APP_CONFIG.supabaseUrl, APP_CONFIG.supabaseKey)
+            : null;
+
+        const RATE_KEY = 'jf_fb_ts';
+        const RATE_MS  = 60_000;
+        function isRateLimited() {
+            return Date.now() - parseInt(localStorage.getItem(RATE_KEY) || '0') < RATE_MS;
+        }
+        function markSent() { localStorage.setItem(RATE_KEY, Date.now()); }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        function formatDate(iso) {
+            return new Date(iso).toLocaleDateString('es-ES',
+                { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+        function showStatus(type, msg) {
+            const el = document.getElementById('fbStatus');
+            if (!el) return;
+            el.className = `fb-status ${type}`;
+            el.textContent = msg;
+            setTimeout(() => { el.className = 'fb-status'; el.textContent = ''; }, 4000);
+        }
+
+        async function loadComments() {
+            const list = document.getElementById('commentsList');
+            if (!list) return;
+            if (!sb) {
+                list.innerHTML = '<div class="comments-empty">Conecta Supabase para ver los comentarios.</div>';
+                return;
+            }
+            const { data, error } = await sb
+                .from('feedback')
+                .select('nombre, mensaje, rating, created_at')
+                .order('created_at', { ascending: false })
+                .limit(10);
+            if (error || !data) {
+                list.innerHTML = '<div class="comments-empty">No se pudieron cargar los comentarios.</div>';
+                return;
+            }
+            if (!data.length) {
+                list.innerHTML = '<div class="comments-empty">Aún no hay comentarios. ¡Sé el primero!</div>';
+                return;
+            }
+            list.innerHTML = data.map(c => `
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <span class="comment-name">${escapeHtml(c.nombre || 'Anónimo')}</span>
+                        ${c.rating ? `<span class="comment-stars">${'★'.repeat(c.rating)}${'☆'.repeat(5 - c.rating)}</span>` : ''}
+                    </div>
+                    <p class="comment-text">${escapeHtml(c.mensaje)}</p>
+                    <div class="comment-date">${formatDate(c.created_at)}</div>
+                </div>`).join('');
+        }
+
+        let selectedRating = 0;
+        document.querySelectorAll('#starRating .star').forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.dataset.val);
+                document.querySelectorAll('#starRating .star').forEach(s =>
+                    s.classList.toggle('active', parseInt(s.dataset.val) <= selectedRating)
+                );
+            });
+            star.addEventListener('mouseenter', () => {
+                const hv = parseInt(star.dataset.val);
+                document.querySelectorAll('#starRating .star').forEach(s =>
+                    s.style.color = parseInt(s.dataset.val) <= hv ? '#f59e0b' : ''
+                );
+            });
+            star.addEventListener('mouseleave', () => {
+                document.querySelectorAll('#starRating .star').forEach(s => s.style.color = '');
+            });
+        });
+
+        const fbMensaje = document.getElementById('fbMensaje');
+        const charCount = document.getElementById('charCount');
+        fbMensaje?.addEventListener('input', () => {
+            if (charCount) charCount.textContent = fbMensaje.value.length;
+        });
+
+        document.getElementById('feedbackForm')?.addEventListener('submit', async e => {
+            e.preventDefault();
+            const fbSubmit = document.getElementById('fbSubmit');
+            const nombre   = document.getElementById('fbNombre')?.value.trim() || null;
+            const mensaje  = fbMensaje?.value.trim();
+
+            if (!mensaje) { showStatus('error', 'El comentario es obligatorio.'); return; }
+            if (!sb) { showStatus('error', 'Configura js/config.js con tus credenciales de Supabase.'); return; }
+            if (isRateLimited()) { showStatus('error', 'Espera un momento antes de enviar otro comentario.'); return; }
+
+            fbSubmit.disabled = true;
+            fbSubmit.textContent = 'Enviando...';
+
+            const { error } = await sb.from('feedback').insert({
+                nombre: nombre || null,
+                mensaje,
+                rating: selectedRating || null,
+            });
+
+            fbSubmit.disabled = false;
+            fbSubmit.innerHTML = '<i class="ph-fill ph-paper-plane-tilt"></i> Enviar feedback';
+
+            if (error) {
+                showStatus('error', 'Error al enviar. Intenta de nuevo.');
+            } else {
+                markSent();
+                document.getElementById('fbFormWrap').style.display = 'none';
+                document.getElementById('fbSuccessMsg').style.display = 'block';
+            }
+        });
+
+        loadComments();
+    })();
+    </script>
+</body>
+</html>
