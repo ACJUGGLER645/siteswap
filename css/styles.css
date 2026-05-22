@@ -972,3 +972,127 @@ body {
     .types-grid { grid-template-columns: 1fr; }
     .trick-list { grid-template-columns: 1fr; }
 }
+
+/* =====================
+   FEEDBACK SECTION
+   ===================== */
+.feedback-section { padding: 100px 0; background: var(--bg-secondary); }
+.feedback-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Form card */
+.feedback-form-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-card);
+    padding: 32px;
+    box-shadow: var(--card-shadow);
+}
+.feedback-form { display: flex; flex-direction: column; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+}
+.form-group input,
+.form-group textarea {
+    padding: 12px 16px;
+    border-radius: var(--radius-btn);
+    border: 1.5px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    resize: vertical;
+    transition: var(--transition);
+}
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 4%, transparent);
+}
+.char-count { font-size: 0.75rem; color: var(--text-secondary); text-align: right; }
+
+/* Stars */
+.star-rating { display: flex; gap: 4px; }
+.star {
+    background: none;
+    border: none;
+    font-size: 1.9rem;
+    color: var(--card-border);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.12s, transform 0.12s;
+}
+.star:hover, .star.active { color: #f59e0b; transform: scale(1.18); }
+
+/* Status message */
+.fb-status {
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    border-radius: var(--radius-btn);
+    display: none;
+}
+.fb-status.success {
+    display: block;
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    color: var(--color-accent);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+.fb-status.error {
+    display: block;
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    color: var(--color-primary);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+
+/* Comments column */
+.feedback-comments { display: flex; flex-direction: column; gap: 16px; }
+.feedback-comments h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--color-secondary);
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 4px;
+}
+.comments-list { display: flex; flex-direction: column; gap: 12px; }
+.comment-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--card-shadow);
+    animation: fadeInUp 0.4s ease-out both;
+}
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.comment-name { font-weight: 600; font-size: 0.88rem; color: var(--text-primary); }
+.comment-stars { color: #f59e0b; font-size: 0.85rem; letter-spacing: 1px; }
+.comment-text { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+.comment-date { font-size: 0.72rem; color: var(--text-secondary); opacity: 0.55; margin-top: 8px; }
+.comments-loading,
+.comments-empty {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 32px 24px;
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) { .feedback-layout { grid-template-columns: 1fr; } }

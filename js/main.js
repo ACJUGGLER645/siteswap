@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let speedMult = 1;
     let events    = [];
     let loopLen   = 0;
-    let simMode      = 'canvas';
+    let simMode      = 'jlab';
     let activePattern = null; // tracks the last pattern that ran
 
     // ---- MODE SWITCH (Canvas / JugglingLab) ----
@@ -492,6 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     drawIdle();
+    setMode('jlab');
 
     // =====================
     // SCROLLYTELLING
@@ -535,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pattern && pattern !== lastActivePanel) {
             lastActivePanel = pattern;
             if (!active.classList.contains('panel-interactive')) {
-                startCanvasSim(pattern);
+                startSim(pattern);
             }
         }
     }
@@ -557,5 +558,142 @@ document.addEventListener('DOMContentLoaded', () => {
             window.sileo?.error({ title: 'Email inválido', message: 'Ingresa un correo válido.' });
         }
     });
+
+    // =====================
+    // FEEDBACK — Supabase
+    // Las credenciales viven en js/config.js (gitignoreado).
+    // Copia js/config.example.js → js/config.js y pon tus valores.
+    // =====================
+    const sbReady = typeof supabase !== 'undefined'
+        && typeof APP_CONFIG !== 'undefined'
+        && APP_CONFIG.supabaseUrl !== 'TU_SUPABASE_URL';
+
+    const sb = sbReady
+        ? supabase.createClient(APP_CONFIG.supabaseUrl, APP_CONFIG.supabaseKey)
+        : null;
+
+    // Rate limiting: máximo 1 envío cada 60 s (localStorage)
+    const RATE_KEY = 'jf_fb_ts';
+    const RATE_MS  = 60_000;
+    function isRateLimited() {
+        return Date.now() - parseInt(localStorage.getItem(RATE_KEY) || '0') < RATE_MS;
+    }
+    function markSent() { localStorage.setItem(RATE_KEY, Date.now()); }
+
+    // --- Helpers ---
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function formatDate(iso) {
+        return new Date(iso).toLocaleDateString('es-ES',
+            { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    function showStatus(type, msg) {
+        const el = document.getElementById('fbStatus');
+        if (!el) return;
+        el.className = `fb-status ${type}`;
+        el.textContent = msg;
+        setTimeout(() => { el.className = 'fb-status'; el.textContent = ''; }, 4000);
+    }
+
+    // --- Load recent comments ---
+    async function loadComments() {
+        const list = document.getElementById('commentsList');
+        if (!list) return;
+        if (!sb) {
+            list.innerHTML = '<div class="comments-empty">Conecta Supabase para ver los comentarios.</div>';
+            return;
+        }
+        const { data, error } = await sb
+            .from('feedback')
+            .select('nombre, mensaje, rating, created_at')
+            .order('created_at', { ascending: false })
+            .limit(10);
+
+        if (error || !data) {
+            list.innerHTML = '<div class="comments-empty">No se pudieron cargar los comentarios.</div>';
+            return;
+        }
+        if (!data.length) {
+            list.innerHTML = '<div class="comments-empty">Aún no hay comentarios. ¡Sé el primero!</div>';
+            return;
+        }
+        list.innerHTML = data.map(c => `
+            <div class="comment-card">
+                <div class="comment-header">
+                    <span class="comment-name">${escapeHtml(c.nombre || 'Anónimo')}</span>
+                    ${c.rating ? `<span class="comment-stars">${'★'.repeat(c.rating)}${'☆'.repeat(5 - c.rating)}</span>` : ''}
+                </div>
+                <p class="comment-text">${escapeHtml(c.mensaje)}</p>
+                <div class="comment-date">${formatDate(c.created_at)}</div>
+            </div>`).join('');
+    }
+
+    // --- Star rating ---
+    let selectedRating = 0;
+    document.querySelectorAll('#starRating .star').forEach(star => {
+        star.addEventListener('click', () => {
+            selectedRating = parseInt(star.dataset.val);
+            document.querySelectorAll('#starRating .star').forEach(s =>
+                s.classList.toggle('active', parseInt(s.dataset.val) <= selectedRating)
+            );
+        });
+        star.addEventListener('mouseenter', () => {
+            const hv = parseInt(star.dataset.val);
+            document.querySelectorAll('#starRating .star').forEach(s =>
+                s.style.color = parseInt(s.dataset.val) <= hv ? '#f59e0b' : ''
+            );
+        });
+        star.addEventListener('mouseleave', () => {
+            document.querySelectorAll('#starRating .star').forEach(s => s.style.color = '');
+        });
+    });
+
+    // --- Char counter ---
+    const fbMensaje = document.getElementById('fbMensaje');
+    const charCount  = document.getElementById('charCount');
+    fbMensaje?.addEventListener('input', () => {
+        if (charCount) charCount.textContent = fbMensaje.value.length;
+    });
+
+    // --- Submit ---
+    document.getElementById('feedbackForm')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        const fbSubmit = document.getElementById('fbSubmit');
+        const nombre   = document.getElementById('fbNombre')?.value.trim() || null;
+        const mensaje  = fbMensaje?.value.trim();
+
+        if (!mensaje) { showStatus('error', 'El comentario es obligatorio.'); return; }
+        if (!sb) { showStatus('error', 'Configura js/config.js con tus credenciales de Supabase.'); return; }
+        if (isRateLimited()) { showStatus('error', 'Espera un momento antes de enviar otro comentario.'); return; }
+
+        fbSubmit.disabled = true;
+        fbSubmit.textContent = 'Enviando...';
+
+        const { error } = await sb.from('feedback').insert({
+            nombre: nombre || null,
+            mensaje,
+            rating: selectedRating || null,
+        });
+
+        fbSubmit.disabled = false;
+        fbSubmit.innerHTML = '<i class="ph-fill ph-paper-plane-tilt"></i> Enviar';
+
+        if (error) {
+            showStatus('error', 'Error al enviar. Intenta de nuevo.');
+        } else {
+            markSent();
+            showStatus('success', '¡Gracias por tu comentario!');
+            e.target.reset();
+            selectedRating = 0;
+            document.querySelectorAll('#starRating .star').forEach(s => s.classList.remove('active'));
+            if (charCount) charCount.textContent = '0';
+            loadComments();
+        }
+    });
+
+    loadComments();
 
 });
